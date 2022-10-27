@@ -1,35 +1,46 @@
 import React, {Component} from 'react';
 
 class Characters extends Component {
+
     constructor(props) {
         super(props);
 
         this.state = {
-            characters: [],
+            isLiked: false,
+            beers: [],
         };
     }
 
     componentDidMount() {
-        fetch("https://rickandmortyapi.com/api/character")
+        fetch("https://api.punkapi.com/v2/beers")
             .then((response) => response.json())
             .then((data) => {
                 this.setState({
-                    characters: [...data.results]
+                    beers: [...data]
                     });
             });
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+
+    }
+
+
     render() {
         return (
             <div>
-                <h2>Rick & Morty Characters</h2>
+                <h2>Beers:</h2>
                 <ul>
-                    {this.state.characters.map((character) => {
+                    {this.state.beers.map((beers) => {
                         return(
                             <li>
-                                <img src={character.image} alt={character.name}/>
-                                <h4>{character.name}</h4>
-                                <p>{character.status}</p>
+                                <img src={beers.image_url} alt={beers.name}/>
+                                <h4>{beers.name}</h4>
+                                <p>{beers.tagline}</p>
+                                <button onClick={() => {
+                                    this.setState({isLiked: !this.isLiked})}}>Like Me?</button>
+                                <p>Liked?</p>
+                                <p>{this.state.isLiked}</p>
                             </li>
                         )
                     })}
